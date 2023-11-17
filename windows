@@ -1,0 +1,50 @@
+package WindowsHandles;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
+
+public class Irctc {
+	// https://www.irctc.co.in/
+
+	public static void main(String[] args) throws InterruptedException {
+		ChromeOptions options = new ChromeOptions();
+		options.addArguments("--disable-notifications");
+		ChromeDriver driver = new ChromeDriver(options);
+		driver.manage().window().maximize();
+
+		driver.get("https://www.irctc.co.in/");
+		String Parent = driver.getTitle();
+		System.out.println(Parent);
+
+		Thread.sleep(2000);
+
+		driver.findElement(By.partialLinkText("FLIGHTS")).click();
+
+		//set windows handels
+		Set<String> Child = driver.getWindowHandles();
+
+		//size
+		int size = Child.size();
+		System.out.println("Printing child id " + Child);
+		System.out.println(size);
+
+		//geting set in to list 
+		List<String> flist = new ArrayList<String>(Child);
+		//switching child window
+		driver.switchTo().window(flist.get(1));
+		
+		//getting title name of child window
+		System.out.println(driver.getTitle());
+
+		//closing child window
+		driver.close();
+		
+		
+	}
+
+}
